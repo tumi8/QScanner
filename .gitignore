@@ -1,0 +1,11 @@
+quic-scanner
+output/
+tests/example-server/server_*.qlog
+unrelated_stuff/zmap/zmap_csv
+unrelated_stuff/jupyter-notebook/.ipynb_checkpoints
+unrelated_stuff/jupyter-notebook/scan_*
+unrelated_stuff/jupyter-notebook/padding_scan_*
+unrelated_stuff/jupyter-notebook/pyasn_names.json
+unrelated_stuff/jupyter-notebook/pyasn.dat
+unrelated_stuff/jupyter-notebook/results.db
+unrelated_stuff/jupyter-notebook/padding.db
