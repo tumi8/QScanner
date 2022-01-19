@@ -1,6 +1,7 @@
 package write
 
 import (
+	"crypto/x509"
 	"encoding/base64"
 	"encoding/csv"
 	"encoding/hex"
@@ -33,6 +34,7 @@ var tlsParameterHeader []string = []string{
 	"helloRetryRequestExtensions",
 	"certificateExtensions",
 	"certificateHashes",
+	"validCert",
 }
 
 type TLSParameterResult struct {
@@ -95,6 +97,23 @@ func (q *TLSParameterResult) Write(target *util.Target, certCache *misc.CertCach
 		certHash := hex.EncodeToString(misc.GetSHA256(certificate.Raw))
 		certificateHashes = append(certificateHashes, certHash)
 	}
+
+	certValid := true
+
+	opts := x509.VerifyOptions{
+		CurrentTime:   target.StartTime,
+		DNSName:       target.Hostname,
+		Intermediates: x509.NewCertPool(),
+	}
+	for _, cert := range connectionState.PeerCertificates[1:] {
+		opts.Intermediates.AddCert(cert)
+	}
+	var err error
+	_, err = connectionState.PeerCertificates[0].Verify(opts)
+	if err != nil {
+		certValid = false
+	}
+
 	result := []string{
 		target.Address,
 		target.Port,
@@ -108,6 +127,7 @@ func (q *TLSParameterResult) Write(target *util.Target, certCache *misc.CertCach
 		stringifyExtensions(connectionState.HelloRetryRequestExtensions),
 		stringifyExtensions(connectionState.CertificateExtensions),
 		strings.Join(certificateHashes, " "),
+		strconv.FormatBool(certValid),
 	}
 	if len(result) != len(tlsParameterHeader) {
 		log.Fatal().Msg("TLS parameter do not fit the header!")
