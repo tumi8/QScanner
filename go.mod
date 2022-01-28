@@ -1,4 +1,4 @@
-module github.com/tumi8/qscanner
+module gitlab.lrz.de/netintum/projects/gino/students/quic-scanner
 
 go 1.16
 

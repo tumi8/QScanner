@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/marten-seemann/qpack"
 	"github.com/tumi8/quic-go/quicvarint"
-	"github.com/tumi8/qscanner/util"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
 	"io"
 	"io/ioutil"
 

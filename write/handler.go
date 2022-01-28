@@ -8,8 +8,8 @@ import (
 
 	// Logging
 	"github.com/rs/zerolog/log"
-	"github.com/tumi8/qscanner/misc"
-	"github.com/tumi8/qscanner/util"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/misc"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
 )
 
 type ResultHandler interface {

@@ -25,9 +25,9 @@ import (
 	quiclogging "github.com/tumi8/quic-go/logging"
 	"github.com/tumi8/quic-go/noninternal/protocol"
 	"github.com/tumi8/quic-go/qlog"
-	"github.com/tumi8/qscanner/read"
-	"github.com/tumi8/qscanner/util"
-	"github.com/tumi8/qscanner/write"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/read"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/write"
 )
 
 // Scanner includes the TLS and QUIC configuration, the fileHandler, the size of the bucket and port of the scan
