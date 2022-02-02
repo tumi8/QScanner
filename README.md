@@ -15,6 +15,7 @@ The scanner retrieves information regarding
 - [Johannes Zirngibl, Technical University of Munich](https://www.net.in.tum.de/members/zirngibl/)
 
 ## Build process
+Can only be used with go 1.16 at the moment.
 
 - `git pull`
 - `go clean -modcache`
@@ -45,6 +46,11 @@ Usage of ./quic-scanner:
         output a qlog (in the same directory)
   -version string
         sets version used by scan (e.g. "ff00001d")
+```
+
+Example:
+```
+./qscanner -qlog -keylog -output scan_2022_XX_YY -input input.txt -http3 -bucket-refill-duration 100 -bucket-size 1
 ```
 
 ## Output
