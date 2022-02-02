@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	qtls "gitlab.lrz.de/netintum/projects/gino/students/quic-tls"
+	qtls "github.com/tumi8/quic-tls"
 
 	// Logging
 	"github.com/rs/zerolog/log"

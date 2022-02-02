@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"gitlab.lrz.de/netintum/projects/gino/students/quic-go"
+	"github.com/zirngibl/quic-go"
 )
 
 type Target struct {
