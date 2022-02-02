@@ -26,9 +26,9 @@ import (
 	quiclogging "github.com/zirngibl/quic-go/logging"
 	"github.com/zirngibl/quic-go/noninternal/protocol"
 	"github.com/zirngibl/quic-go/qlog"
-	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/read"
-	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
-	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/write"
+	"github.com/zirngibl/qscanner/read"
+	"github.com/zirngibl/qscanner/util"
+	"github.com/zirngibl/qscanner/write"
 )
 
 // Scanner includes the TLS and QUIC configuration, the fileHandler, the size of the bucket and port of the scan

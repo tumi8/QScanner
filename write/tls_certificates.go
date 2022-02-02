@@ -10,8 +10,8 @@ import (
 	// Logging
 	"github.com/rs/zerolog/log"
 
-	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/misc"
-	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
+	"github.com/zirngibl/qscanner/misc"
+	"github.com/zirngibl/qscanner/util"
 )
 
 // beginCertificate and endCertificate signal start and beginning of PEM-encoded TLS certificates
