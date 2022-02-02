@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/tumi8/quic-go"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-go"
 )
 
 type Target struct {
+	ID			  uint64
 	Address       string
 	Port          string
 	Hostname      string
@@ -17,6 +18,8 @@ type Target struct {
 	Session       quic.Session
 	SessionError  error
 	HTTP          *http.Response
+	SCID		  []byte
+	DCID		  []byte
 }
 
 func (target Target) Identifier() string {

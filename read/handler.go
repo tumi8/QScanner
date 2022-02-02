@@ -2,6 +2,7 @@ package read
 
 import (
 	"encoding/csv"
+	"encoding/hex"
 	"os"
 	"strings"
 
@@ -13,6 +14,8 @@ type InputRow struct {
 	Address  string
 	Port     string
 	Hostname string
+	SCID	 []byte
+	DCID	 []byte
 }
 
 type ReadHandler struct {
@@ -54,11 +57,32 @@ func (r ReadHandler) Read() (*InputRow, error) {
 	} else {
 		result.Hostname = ""
 	}
-	if len(row) >= 3 {
+	if len(row) >= 3 && row[2] != "" {
 		result.Port = row[2]
 	} else {
 		result.Port = "443"
 	}
+	if len(row) >= 4 {
+		result.SCID, err = hex.DecodeString(row[3])
+		if err != nil || len(result.SCID) < 8 {
+			log.Error().Err(err).Msgf("can not use %s as SCID, scan with default", row[3])
+			result.SCID = nil
+		}
+	} else {
+		result.SCID = nil
+	}
+	if len(row) >= 5 {
+		result.DCID, err = hex.DecodeString(row[4])
+		if err != nil || len(result.DCID) < 8 {
+			log.Error().Err(err).Msgf("can not use %s as DCID, scan with default", row[4])
+			result.DCID = nil
+		}
+	} else {
+		result.DCID = nil
+	}
+
+
+
 	return result, nil
 }
 

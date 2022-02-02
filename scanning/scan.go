@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"fmt"
 	"io"
 	"math/big"
 	"net/http"
@@ -21,10 +22,10 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/marten-seemann/qpack"
-	"github.com/tumi8/quic-go"
-	quiclogging "github.com/tumi8/quic-go/logging"
-	"github.com/tumi8/quic-go/noninternal/protocol"
-	"github.com/tumi8/quic-go/qlog"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-go"
+	quiclogging "gitlab.lrz.de/netintum/projects/gino/students/quic-go/logging"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-go/noninternal/protocol"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-go/qlog"
 	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/read"
 	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
 	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/write"
@@ -58,6 +59,9 @@ func NewScanner(readHandler *read.ReadHandler, writeHandler *write.WriteHandler,
 	scanner.quicConf = &quic.Config{
 		HandshakeIdleTimeout: time.Second * 30,
 	}
+
+	fmt.Println(scanner.quicConf.SCID)
+	fmt.Println(len(scanner.quicConf.SCID))
 	if enableQlog {
 		scanner.quicConf.Tracer = qlog.NewTracer(func(_ quiclogging.Perspective, connID []byte) io.WriteCloser {
 			return writeHandler.QlogWriteCloser
@@ -85,6 +89,16 @@ func NewScanner(readHandler *read.ReadHandler, writeHandler *write.WriteHandler,
 	return scanner
 }
 
+func (scanner Scanner) updateConfig(target *util.Target,) *quic.Config {
+	conf := scanner.quicConf.Clone()
+
+	conf.SCID = target.SCID
+	conf.DCID = target.DCID
+
+	conf.ConnectionIDLength = len(target.SCID)
+	return conf
+}
+
 func (scanner Scanner) scanTarget(target *util.Target, tlsConf *tls.Config, wg *sync.WaitGroup) {
 	defer wg.Done()
 
@@ -93,7 +107,9 @@ func (scanner Scanner) scanTarget(target *util.Target, tlsConf *tls.Config, wg *
 	target.StartTime = time.Now()
 	log.Debug().Str("target", target.Identifier()).Msg("Starting session")
 
-	target.Session, target.SessionError = quic.DialAddr(address, tlsConf, scanner.quicConf)
+	quicConf := scanner.updateConfig(target)
+
+	target.Session, target.SessionError = quic.DialAddr(address, tlsConf, quicConf)
 
 	target.HandshakeTime = time.Now()
 
@@ -198,6 +214,7 @@ func (scanner Scanner) Scan() {
 		stop = true
 	}()
 	var wg sync.WaitGroup
+	targetid := uint64(0)
 	for {
 		if stop {
 			break
@@ -216,13 +233,17 @@ func (scanner Scanner) Scan() {
 		tlsConf := scanner.tlsConf.Clone()
 
 		target := &util.Target{}
+		target.ID = targetid
 		target.Address = row.Address
 		tlsConf.ServerName = row.Hostname
 		target.Hostname = row.Hostname
 		target.Port = row.Port
+		target.SCID = row.SCID
+		target.DCID = row.DCID
 		atomic.AddInt64(scannedConnectionsInTotal, 1)
 		atomic.AddInt64(scannedConnectionsSinceLast, 1)
 		go scanner.scanTarget(target, tlsConf, &wg)
+		targetid += 1
 	}
 	wg.Wait()
 	logProgress(scannedConnectionsInTotal, scannedConnectionsSinceLast)

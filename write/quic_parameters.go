@@ -15,6 +15,7 @@ import (
 )
 
 var quicParameterHeader []string = []string{
+	"targetid",
 	"address",
 	"port",
 	"hostname",
@@ -76,6 +77,7 @@ func (q *QuicTransportParameterResult) Write(target *util.Target, certCache *mis
 		statelessResetToken = hex.EncodeToString((*(transportParameters.StatelessResetToken))[:])
 	}
 	result := []string{
+		strconv.FormatUint(target.ID, 10),
 		target.Address,
 		target.Port,
 		target.Hostname,

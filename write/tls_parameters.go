@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	qtls "github.com/tumi8/quic-tls"
+	qtls "gitlab.lrz.de/netintum/projects/gino/students/quic-tls"
 
 	// Logging
 	"github.com/rs/zerolog/log"
@@ -22,6 +22,7 @@ import (
 )
 
 var tlsParameterHeader []string = []string{
+	"targetid",
 	"address",
 	"port",
 	"hostname",
@@ -115,6 +116,7 @@ func (q *TLSParameterResult) Write(target *util.Target, certCache *misc.CertCach
 	}
 
 	result := []string{
+		strconv.FormatUint(target.ID, 10),
 		target.Address,
 		target.Port,
 		target.Hostname,

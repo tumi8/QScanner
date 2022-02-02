@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	// Logging
 	"github.com/rs/zerolog/log"
@@ -13,6 +14,7 @@ import (
 )
 
 var quicHTTPHeaderHeader []string = []string{
+	"targetid",
 	"address",
 	"port",
 	"hostname",
@@ -45,6 +47,7 @@ func (q *HTTPHeaderResult) Write(target *util.Target, certCache *misc.CertCache)
 	}
 	for header := range target.HTTP.Header {
 		result := []string{
+			strconv.FormatUint(target.ID, 10),
 			target.Address,
 			target.Port,
 			target.Hostname,

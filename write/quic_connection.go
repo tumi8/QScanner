@@ -2,6 +2,7 @@ package write
 
 import (
 	"encoding/csv"
+	"encoding/hex"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -14,9 +15,12 @@ import (
 )
 
 var quicConnectionHeader []string = []string{
+	"targetid",
 	"address",
 	"port",
 	"hostname",
+	"scid",
+	"dcid",
 	"hasRetry",
 	"startTime",
 	"handshakeTime",
@@ -63,9 +67,12 @@ func (q *QuicConnectionResult) Write(target *util.Target, certCache *misc.CertCa
 		version = uint64(target.Session.GetSession().GetVersion())
 	}
 	result := []string{
+		strconv.FormatUint(target.ID, 10),
 		target.Address,
 		target.Port,
 		target.Hostname,
+		hex.EncodeToString(target.SCID),
+		hex.EncodeToString(target.DCID),
 		sessionRetry,
 		strconv.FormatInt(target.StartTime.Unix(), 10),
 		strconv.FormatInt(target.HandshakeTime.Unix(), 10),

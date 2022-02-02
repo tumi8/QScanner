@@ -3,7 +3,7 @@ package scanning
 import (
 	"bytes"
 	"github.com/marten-seemann/qpack"
-	"github.com/tumi8/quic-go/quicvarint"
+	"gitlab.lrz.de/netintum/projects/gino/students/quic-go/quicvarint"
 	"gitlab.lrz.de/netintum/projects/gino/students/quic-scanner/util"
 	"io"
 	"io/ioutil"
