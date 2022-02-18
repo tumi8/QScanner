@@ -59,7 +59,7 @@ func NewWriteHandler(outputDirectory string, keylogFlag bool, qlogFlag bool) Wri
 	log.Debug().Msg("Create new WriteHandler")
 	writeHandler := WriteHandler{}
 	writeHandler.mutex = &sync.Mutex{}
-	writeHandler.certCache = misc.NewCertCache(misc.GetSHA256)
+	writeHandler.certCache = misc.NewCertCache(misc.GetSHA1)
 
 	writeHandler.mutex.Lock()
 	defer writeHandler.mutex.Unlock()
