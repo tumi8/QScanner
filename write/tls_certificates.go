@@ -10,8 +10,8 @@ import (
 	// Logging
 	"github.com/rs/zerolog/log"
 
-	"github.com/zirngibl/qscanner/misc"
-	"github.com/zirngibl/qscanner/util"
+	"github.com/tumi8/qscanner/misc"
+	"github.com/tumi8/qscanner/util"
 )
 
 // beginCertificate and endCertificate signal start and beginning of PEM-encoded TLS certificates

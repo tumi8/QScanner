@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/zirngibl/quic-go"
+	"github.com/tumi8/quic-go"
 )
 
 type Target struct {
@@ -15,7 +15,7 @@ type Target struct {
 	StartTime     time.Time
 	HandshakeTime time.Time
 	CloseTime     time.Time
-	Session       quic.Session
+	Session       quic.Connection
 	SessionError  error
 	HTTP          *http.Response
 	SCID		  []byte

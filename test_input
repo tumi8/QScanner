@@ -1,0 +1,9 @@
+ip,hostname,port,scid,dcid
+52.55.120.73,litespeedtech.com,443,,
+104.16.132.229,cloudflare.com,443,,
+151.101.65.57,fastly.com,443,,
+142.250.74.206,google.com,443,,
+185.60.216.35,facebook.com,443,,
+139.162.123.134,nghttp2.org,443,,
+132.226.1.140,h2o.examp1e.net,443,,
+23.99.8.214,quic.westus.cloudapp.azure.com,443,,

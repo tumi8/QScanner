@@ -11,9 +11,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"github.com/zirngibl/qscanner/read"
-	"github.com/zirngibl/qscanner/scanning"
-	"github.com/zirngibl/qscanner/write"
+	"github.com/tumi8/qscanner/read"
+	"github.com/tumi8/qscanner/scanning"
+	"github.com/tumi8/qscanner/write"
 )
 
 func main() {

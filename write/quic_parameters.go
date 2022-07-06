@@ -10,8 +10,8 @@ import (
 	// Logging
 	"github.com/rs/zerolog/log"
 
-	"github.com/zirngibl/qscanner/misc"
-	"github.com/zirngibl/qscanner/util"
+	"github.com/tumi8/qscanner/misc"
+	"github.com/tumi8/qscanner/util"
 )
 
 var quicParameterHeader []string = []string{
@@ -60,7 +60,7 @@ func newQuicTransportParameterResult(outputDirectory string) ResultHandler {
 func (q *QuicTransportParameterResult) Write(target *util.Target, certCache *misc.CertCache) {
 	var retrySourceConnectionID, preferredAddress, statelessResetToken string
 
-	transportParameters := target.Session.GetSession().PeerParams
+	transportParameters := target.Session.GetConnection().PeerParams
 
 	if transportParameters.RetrySourceConnectionID != nil {
 		retrySourceConnectionID = hex.EncodeToString(*transportParameters.RetrySourceConnectionID)

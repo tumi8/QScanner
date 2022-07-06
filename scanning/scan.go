@@ -22,13 +22,13 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/marten-seemann/qpack"
-	"github.com/zirngibl/quic-go"
-	quiclogging "github.com/zirngibl/quic-go/logging"
-	"github.com/zirngibl/quic-go/noninternal/protocol"
-	"github.com/zirngibl/quic-go/qlog"
-	"github.com/zirngibl/qscanner/read"
-	"github.com/zirngibl/qscanner/util"
-	"github.com/zirngibl/qscanner/write"
+	"github.com/tumi8/quic-go"
+	quiclogging "github.com/tumi8/quic-go/logging"
+	"github.com/tumi8/quic-go/noninternal/protocol"
+	"github.com/tumi8/quic-go/qlog"
+	"github.com/tumi8/qscanner/read"
+	"github.com/tumi8/qscanner/util"
+	"github.com/tumi8/qscanner/write"
 )
 
 // Scanner includes the TLS and QUIC configuration, the fileHandler, the size of the bucket and port of the scan

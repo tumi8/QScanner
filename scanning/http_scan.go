@@ -3,8 +3,8 @@ package scanning
 import (
 	"bytes"
 	"github.com/marten-seemann/qpack"
-	"github.com/zirngibl/quic-go/quicvarint"
-	"github.com/zirngibl/qscanner/util"
+	"github.com/tumi8/quic-go/quicvarint"
+	"github.com/tumi8/qscanner/util"
 	"io"
 	"io/ioutil"
 

@@ -10,8 +10,8 @@ import (
 	// Logging
 	"github.com/rs/zerolog/log"
 
-	"github.com/zirngibl/qscanner/misc"
-	"github.com/zirngibl/qscanner/util"
+	"github.com/tumi8/qscanner/misc"
+	"github.com/tumi8/qscanner/util"
 )
 
 var quicConnectionHeader []string = []string{
@@ -63,8 +63,8 @@ func (q *QuicConnectionResult) Write(target *util.Target, certCache *misc.CertCa
 	if target.SessionError != nil {
 		errorMessage = target.SessionError.Error()
 	} else if target.Session != nil {
-		sessionRetry = strconv.FormatBool(target.Session.GetSession().ReceivedRetry)
-		version = uint64(target.Session.GetSession().GetVersion())
+		sessionRetry = strconv.FormatBool(target.Session.GetConnection().ReceivedRetry)
+		version = uint64(target.Session.GetConnection().GetVersion())
 	}
 	result := []string{
 		strconv.FormatUint(target.ID, 10),
