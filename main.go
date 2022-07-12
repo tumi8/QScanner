@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	var keyLogFlag, enableQlog, debug, http3 *bool
+	var keyLogFlag, enableQlog, debug, http3, validateCert *bool
 	var outputDirectory, inputCSV, cpuProfiling, memoryProfiling, version *string
 	var bucketRefillDuration *int
 	var bucketSize *int64
@@ -27,6 +27,7 @@ func main() {
 	enableQlog = flag.Bool("qlog", false, "output a qlog (in the same directory)")
 	debug = flag.Bool("debug", false, "sets level of logging to debug")
 	http3 = flag.Bool("http3", false, "enables a http3 response")
+	validateCert = flag.Bool("validate-cert", false, "set to validate cert after connection")
 
 	outputDirectory = flag.String("output", "", "sets the directory of the output")
 	inputCSV = flag.String("input", "", "sets the input csv file of ZMap scan")
@@ -92,7 +93,7 @@ func main() {
 	}
 
 	readHandler := read.NewReadHandler(*inputCSV)
-	writeHandler := write.NewWriteHandler(outputDirectoryPath, *keyLogFlag, *enableQlog)
+	writeHandler := write.NewWriteHandler(outputDirectoryPath, *keyLogFlag, *enableQlog, *validateCert)
 
 	scanner := scanning.NewScanner(&readHandler, &writeHandler, *enableQlog, *http3, *version, *bucketRefillDuration, *bucketSize)
 	scanner.Scan()

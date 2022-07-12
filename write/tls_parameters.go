@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	qtls "github.com/tumi8/quic-tls"
+	qtls "github.com/tumi8/quic-tls1-18"
 
 	// Logging
 	"github.com/rs/zerolog/log"
@@ -35,7 +35,6 @@ var tlsParameterHeader []string = []string{
 	"helloRetryRequestExtensions",
 	"certificateExtensions",
 	"certificateHashes",
-	"validCert",
 }
 
 type TLSParameterResult struct {
@@ -53,6 +52,9 @@ func newTLSParameterResult(outputDirectory string) ResultHandler {
 		log.Fatal().Err(err).Msg("Cannot create tls_shared_config.csv!")
 	}
 	res.Writer = csv.NewWriter(res.File)
+	if validateCertGlobal {
+		tlsParameterHeader = append(tlsParameterHeader, "validCert")
+	}
 	res.Writer.Write(tlsParameterHeader)
 	return ResultHandler(res)
 }
@@ -98,21 +100,23 @@ func (q *TLSParameterResult) Write(target *util.Target, certCache *misc.CertCach
 		certHash := hex.EncodeToString(misc.GetSHA256(certificate.Raw))
 		certificateHashes = append(certificateHashes, certHash)
 	}
-
 	certValid := true
+	if validateCertGlobal {
 
-	opts := x509.VerifyOptions{
-		CurrentTime:   target.StartTime,
-		DNSName:       target.Hostname,
-		Intermediates: x509.NewCertPool(),
-	}
-	for _, cert := range connectionState.PeerCertificates[1:] {
-		opts.Intermediates.AddCert(cert)
-	}
-	var err error
-	_, err = connectionState.PeerCertificates[0].Verify(opts)
-	if err != nil {
-		certValid = false
+
+		opts := x509.VerifyOptions{
+			CurrentTime:   target.StartTime,
+			DNSName:       target.Hostname,
+			Intermediates: x509.NewCertPool(),
+		}
+		for _, cert := range connectionState.PeerCertificates[1:] {
+			opts.Intermediates.AddCert(cert)
+		}
+		var err error
+		_, err = connectionState.PeerCertificates[0].Verify(opts)
+		if err != nil {
+			certValid = false
+		}
 	}
 
 	result := []string{
@@ -129,7 +133,9 @@ func (q *TLSParameterResult) Write(target *util.Target, certCache *misc.CertCach
 		stringifyExtensions(connectionState.HelloRetryRequestExtensions),
 		stringifyExtensions(connectionState.CertificateExtensions),
 		strings.Join(certificateHashes, " "),
-		strconv.FormatBool(certValid),
+	}
+	if validateCertGlobal {
+		result = append(result, strconv.FormatBool(certValid))
 	}
 	if len(result) != len(tlsParameterHeader) {
 		log.Fatal().Msg("TLS parameter do not fit the header!")

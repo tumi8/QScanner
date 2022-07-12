@@ -12,6 +12,8 @@ import (
 	"github.com/tumi8/qscanner/util"
 )
 
+var validateCertGlobal bool
+
 type ResultHandler interface {
 	Write(target *util.Target, certCache *misc.CertCache)
 	Flush()
@@ -52,9 +54,10 @@ type WriteHandler struct {
 	KeyFile                      *os.File
 	QlogWriteCloser              *qlogWriteCloser
 	certCache                    *misc.CertCache
+
 }
 
-func NewWriteHandler(outputDirectory string, keylogFlag bool, qlogFlag bool) WriteHandler {
+func NewWriteHandler(outputDirectory string, keylogFlag bool, qlogFlag bool, validateCert bool) WriteHandler {
 	var err error
 	log.Debug().Msg("Create new WriteHandler")
 	writeHandler := WriteHandler{}
@@ -81,7 +84,7 @@ func NewWriteHandler(outputDirectory string, keylogFlag bool, qlogFlag bool) Wri
 		}
 		writeHandler.QlogWriteCloser = newBufferedWriteCloser(file)
 	}
-
+	validateCertGlobal = validateCert
 	// Initialize all files and write header
 	log.Debug().Msg("Initialize result files with their header")
 	writeHandler.quicConnectionResult = newQuicConnectionResult(outputDirectory)
